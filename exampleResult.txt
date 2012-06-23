@@ -1,0 +1,76 @@
+Meet String "\"example glossary\", \\backslash"
+Meet String "title"
+Meet NewPair
+Meet MapBegin
+Meet MapPair
+Meet String "S"
+Meet String "title"
+Meet NewPair
+Meet MapBegin
+Meet MapPair
+Meet String "sssss"
+Meet String "String"
+Meet NewPair
+Meet MapBegin
+Meet MapPair
+Meet Number -1
+Meet String "Number float"
+Meet NewPair
+Meet MapPair
+Meet Number 5
+Meet String "Number int"
+Meet NewPair
+Meet MapPair
+Meet String "A meta-markup language"
+Meet String "para"
+Meet NewPair
+Meet MapBegin
+Meet MapPair
+Meet String "GML"
+Meet ArrayBegin
+Meet Element
+Meet String "XML"
+Meet Element
+Meet String "GlossSeeAlso"
+Meet NewPair
+Meet MapPair
+Meet String "Object"
+Meet NewPair
+Meet MapPair
+Meet BOOL 0
+Meet ArrayBegin
+Meet Element
+Meet NULL
+Meet Element
+Meet Number -1
+Meet Element
+Meet String "two"
+Meet Element
+Meet String "­È"
+Meet String "obj inside array"
+Meet NewPair
+Meet MapBegin
+Meet MapPair
+Meet Element
+Meet String "Array"
+Meet NewPair
+Meet MapPair
+Meet BOOL 1
+Meet String "Bool True"
+Meet NewPair
+Meet MapPair
+Meet NULL
+Meet String "Null"
+Meet NewPair
+Meet MapPair
+Meet String "GlossEntry"
+Meet NewPair
+Meet MapPair
+Meet String "GlossDiv"
+Meet NewPair
+Meet MapPair
+Meet String "glossary"
+Meet NewPair
+Meet MapBegin
+Meet MapPair
+Correct JSON

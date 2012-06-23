@@ -1,56 +1,26 @@
 #include <iostream>
-#include "JSONObject.h"
-#include "Object.h"
-#include "JSONReader.h"
-#include "JSONWritter.h"
-
+#include <cstdlib>
+#include <fstream>
+#include <sstream>
+#include "JsonParser.tab.c"
+#include "ConcreteBuilder.h"
 using namespace std;
 
-void testcase1(){
+int main(void) {
+    ifstream jsonFile("json.js");
 
-    string testcase = "[\"a\",1,\[\"Spain\",\"Italy\",25.3\],\{\"name\":\"Lionel Messi\",\"age\":1 \}]"
-    JSONReader jReader;
-    JSONArray* jArray = jReader.read(testcase1);
-    
-    jArray.showPrettify();
-    jArray.put(1);
-    jArray.put(0.46);
-    jArray.put("King of the world");
-    jArray.showPrettify();
-    
-    JSONWritter jWritter;
-    string result = jWritter(jArray);
-    cout << result << endl;
-}
+    stringstream ss;
+    ss << jsonFile.rdbuf();
 
-void testcase2(){
-    /* Specify your test case here */
-}
+    string jsonStr(ss.str());
 
-void testcase3(){
-    /* Specify your test case here */
-}
+    JsonValue* data = callParser(new ConcreteBuilder(), jsonStr);
+    if (data)
+        cout << "Correct JSON" << endl;
+    else
+        cout << "Incorrect JSON" << endl;
 
 
-int main(int argc, char** argv){
-    if(argc!=2){
-	cout << "Usage: ./testcase <TestCase_ID>" << endl;
-	exit(-1);
-    }
-
-    int caseID = int(argv[1]);
-
-    switch(caseID){
-	case 1: testcase1() break;
-	case 2: testcase2() break;
-	case 3: testcase3() break;
-	/* Add new case here */
-
-	default:
-	    cout << "No Matching testcases, exit!" << endl;
-	    break;
-    }
-
+    system("pause");
     return 0;
 }
-

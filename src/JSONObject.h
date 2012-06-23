@@ -3,27 +3,35 @@
 
 #include <map>
 #include <vector>
-#include "Object.h"
+#include "JsonValue.h"
 
-class JSONObject : public Object{
+
+class JsonObject : public JsonValue {
 public:
-    JSONObject(){}
-    JSONObject(map<Object*,object*>* );
-    
-    
+    JsonObject();
+    //JsonObject(map<String*, JsonValue*>& );
 
-
+    virtual void addLeaf(JsonValue* v) {
+        Pair *jsonPair = (Pair *) v;
+        _jsonobj.insert(jsonPair->asPair());
+    }
+    
 private:
-    map<Object*,Object*>* _jsonobj;
+    map<String*, JsonValue*> _jsonobj;
 };
 
-class JSONArray : public Object{
+
+class JsonArray : public JsonValue {
 public:
-    JSONArray()}{}
-    JSONArray(vector<Object*>* );
+    JsonArray();
+    JsonArray(vector<JsonValue*>& );
+
+    virtual void addLeaf(JsonValue* v) {
+        _jsonarr.push_back(v);
+    }
 
 private:
-    vector<Object*>* _jsonarr;
+    vector<JsonValue*> _jsonarr;
 };
 
 
