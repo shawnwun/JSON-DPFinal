@@ -1,101 +1,115 @@
-#ifndef OBJECT_H
-#define OBJECT_H
+#ifndef JSONVALUE_H
+#define JSONVALUE_H
 
 #include <string>
 #include <map>
 #include <vector>
 using namespace std;
 
+class JsonArray;
+class JsonObject;
+
 class JsonValue {
 public:
-    virtual void addLeaf(JsonValue*) {};
-    JsonValue() {};
-    ~JsonValue() {};
-};
+    virtual void addLeaf(JsonValue* v);
+    JsonValue();
+    JsonValue(int i);
+    JsonValue(double d);
+    JsonValue(bool b);
+    JsonValue(string &s);
+    JsonValue(JsonArray *arr);
+    JsonValue(JsonObject *obj);
+    ~JsonValue();
 
-class String : public JsonValue {
-public:
-    String(string s) : _str(s) {}
-    virtual void addLeaf(JsonValue* v) {}
-    
+    int asInt();
+    double asDouble();
+    bool asBool();
+    string asString();
+    JsonArray* asJsonArray();
+    JsonObject* asJsonObject();
+    //ValueType getType();
+    virtual void print(ostream &);
+
+    friend ostream& operator<< (ostream& os, JsonValue* v);
+
+    enum ValueType {            
+        IntType, DoubleType, BoolType,
+        StringType, NullType,
+        ObjectType, ArrayType
+    };
+
 private:
-    string _str;
-};
-
-class Number : public JsonValue {
-public:
-    Number(int i) : _number(i) {}
-    Number(double d) : _number(d) {}
-    virtual void addLeaf(JsonValue* v) {}
-
-private:
-    union _Number {
-        _Number(int i) : _int(i) {}
-        _Number(double i) : _double(i) {}
+    typedef union _JsonValue {
+        _JsonValue();
+        _JsonValue(int i);
+        _JsonValue(double d);
+        _JsonValue(bool b);
+        _JsonValue(string &str);
+        _JsonValue(JsonArray *arr);
+        _JsonValue(JsonObject *obj);
 
         int _int;
         double _double;
-    } _number;
-};
+        bool _bool;
+        char *_string;
+        JsonArray *_array;
+        JsonObject *_object;
 
-class Boolean : public JsonValue {
-public:
-    Boolean(bool b):_bool(b) {}
-    virtual void addLeaf(JsonValue* v) {}
+    } Value;    
 
-private:
-    bool _bool;
-};
-
-/** simple wrapper */
-class Null : public JsonValue {
-public:
-    Null() : _ptr(NULL) {}
-    virtual void addLeaf(JsonValue* v) {}
-
-private:
-    char *_ptr;
+    Value _value;
+    ValueType _type;
 };
 
 class Pair : public JsonValue {
 public:
-    Pair(pair<String*, JsonValue*> &p) : _pair(p) {}
-    virtual void addLeaf(JsonValue* v) {}
+    Pair(string &key, JsonValue *value);
 
-    pair<String*, JsonValue*>& asPair() {
-        return _pair;
-    }
+    string& getKey();
+    JsonValue* getValue();
+    virtual void print(ostream &);
 
 private:
-    pair<String*, JsonValue*> _pair;
+    string _key;
+    JsonValue *_value;
 };
 
 class JsonObject : public JsonValue {
 public:
-    JsonObject() {};
-    JsonObject(map<String*, JsonValue*>& ) {};
+    typedef map<string, JsonValue*> JSON_OBJECT;
 
-    virtual void addLeaf(JsonValue* v) {
-        Pair *jsonPair = (Pair *) v;
-        _jsonobj.insert(jsonPair->asPair());
-    }
+    JsonObject();
+    JsonObject(const JsonObject &rhs);
+    //JsonObject(map<string, JsonValue*>& ) {};
+    //JsonObject(const JsonObject& rhs) {};
+
+    virtual void addLeaf(JsonValue* v);
+
+    int getInt(const string &key);
+    string getString(const string &key);
+    JsonObject* getJsonObject(const string &key);
+
+
+    virtual void print(ostream &);
 
 private:
-    map<String*, JsonValue*> _jsonobj;
+    JSON_OBJECT _jsonobj;
 };
 
 
 class JsonArray : public JsonValue {
 public:
-    JsonArray() {};
-    JsonArray(vector<JsonValue*>& ) {};
+    JsonArray();
+    JsonArray(const JsonArray &rhs);
+    // JsonArray(const JsonArray& rhs) {};
 
-    virtual void addLeaf(JsonValue* v) {
-        _jsonarr.push_back(v);
-    }
+    virtual void addLeaf(JsonValue* v);
+    virtual void print(ostream &);
 
 private:
     vector<JsonValue*> _jsonarr;
 };
+
+
 #endif
 

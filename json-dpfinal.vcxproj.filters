@@ -18,15 +18,18 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\JsonValue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\JsonBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\JsonValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ConcreteBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\JsonBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

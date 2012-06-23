@@ -14,9 +14,13 @@ int main(void) {
 
     string jsonStr(ss.str());
 
-    JsonValue* data = callParser(new ConcreteBuilder(), jsonStr);
-    if (data)
+    JsonObject* data = (JsonObject*) callParser(new ConcreteBuilder(), jsonStr);
+    if (data) {
         cout << "Correct JSON" << endl;
+        cout << "==============================" << endl;
+        cout << data;
+        //data->getJsonObject("glossary")->print();
+    }
     else
         cout << "Incorrect JSON" << endl;
 
