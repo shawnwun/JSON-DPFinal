@@ -5,6 +5,9 @@
 #include "JsonParser.tab.c"
 #include "ConcreteBuilder.h"
 #include "PrintImp.h"
+//#include "JsonValue.h"
+//#include "JsonException.h"
+
 using namespace std;
 
 int main(void) {
@@ -17,17 +20,18 @@ int main(void) {
 
     // Config print function
     //JsonValue::ConfigImp(new DefaultPrintImp());
-    JsonValue::ConfigImp(new PrettyPrintImp(8));
+    JsonValue::ConfigImp(new PrettyPrintImp(4));
 
-    JsonValue* data = callParser(new ConcreteBuilder(), jsonStr);
-    if (data) {
-        cout << "Correct JSON" << endl;
+    //JsonValue* data = callParser(new ConcreteBuilder(), jsonStr);
+    JsonObject* data = (JsonObject*)callParser(new ConcreteBuilder(), jsonStr);
+    
+    if(data){
+	cout << "Correct JSON" << endl;
         cout << "==============================" << endl;
         cout << data << endl;
-        //data->getJsonObject("glossary")->print();
-    }
-    else
-        cout << "Incorrect JSON" << endl;
+        cout << data->getObjectByKey("glossary") << endl;
+	cout << endl;
+    } 
 
     return 0;
 }

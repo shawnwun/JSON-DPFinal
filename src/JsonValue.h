@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
+//#include "JsonException.h"
 using namespace std;
 
 class JsonArray;
@@ -22,7 +23,6 @@ public:
         ObjectType, ArrayType
     };
 
-    virtual void addLeaf(JsonValue* v);
     JsonValue();
     JsonValue(int i);
     JsonValue(double d);
@@ -39,8 +39,12 @@ public:
     JsonArray* asJsonArray();
     JsonObject* asJsonObject();
     ValueType getType();
+    
+    virtual void addLeaf(JsonValue* v);
     virtual void print(ostream &, int level);
-
+    virtual JsonValue* getObjectByKey(const string& key);
+    virtual JsonValue* getObjectByIndex(const int& index);
+    
     friend ostream& operator<< (ostream& os, JsonValue* v);
 
     // Config function
@@ -98,14 +102,14 @@ public:
     //JsonObject(const JsonObject& rhs) {};
 
     virtual void addLeaf(JsonValue* v);
-
+    virtual JsonValue* getObjectByKey(const string &key);
+    virtual void print(ostream &, int level);
+    
     int getSize();
     int getInt(const string &key);
     string getString(const string &key);
-    JsonObject* getJsonObject(const string &key);
     JSON_OBJECT getObjectMapping(); 
 
-    virtual void print(ostream &, int level);
 
 private:
     JSON_OBJECT _jsonobj;
@@ -122,6 +126,7 @@ public:
 
     virtual void addLeaf(JsonValue* v);
     virtual void print(ostream &, int level);
+    virtual JsonValue* getObjectByIndex(const int& index);
 
 private:
     vector<JsonValue*> _jsonarr;

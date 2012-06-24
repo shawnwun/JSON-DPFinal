@@ -1710,7 +1710,7 @@ FILE* mytmpfile() {
     return fp;
 }
 
-
+#include "JsonException.h"
 JsonValue* callParser(JsonBuilder* jsonBuilder, string jsonString){
     builder = jsonBuilder;
 
@@ -1718,6 +1718,14 @@ JsonValue* callParser(JsonBuilder* jsonBuilder, string jsonString){
 
     fprintf(yyin, "%s", jsonString.c_str());
     fseek ( yyin , 0 , SEEK_SET );
+    
+    try{
+	if(yyparse!=0){
+	    throw incorrexcep;
+	}
+    } catch(IncorrectJsonException& exception){
+	cout << exception.what() << endl;
+    }
 
     return (yyparse()==0) ? finalObject : NULL ;
 }

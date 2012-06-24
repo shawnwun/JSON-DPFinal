@@ -5,6 +5,7 @@
 #include <vector>
 #include "JsonValue.h"
 #include "PrintImp.h"
+//#include "JsonException.h"
 
 using namespace std;
 
@@ -15,18 +16,26 @@ ostream& operator<< (ostream& os, JsonValue* v) {
     return os;
 }
 
+// Virtual Functions
 void JsonValue::addLeaf(JsonValue* v) {}
+void JsonValue::print(ostream &os, int level) {
+    JsonValue::_imp->print(os, this, level);
+}
+JsonValue* JsonValue::getObjectByKey(const string& key){ return NULL;}
+JsonValue* JsonValue::getObjectByIndex(const int& index){ return NULL;}
+
+
 JsonValue::JsonValue() { _type = NullType; };
 JsonValue::JsonValue(int i) : _value(i) { _type = IntType; }
 JsonValue::JsonValue(double d) : _value(d) { _type = DoubleType; }
 JsonValue::JsonValue(bool b) : _value(b) { _type = BoolType; }
 JsonValue::JsonValue(string &s) : _value(s) { _type = StringType; }
 JsonValue::JsonValue(JsonArray *arr) : _value(arr) {
-    cout << "JsonValue(arr): " << endl;
+    //cout << "JsonValue(arr): " << endl;
     _type = ArrayType;
 }
 JsonValue::JsonValue(JsonObject *obj) : _value(obj) {
-    cout << "JsonValue(obj): " << endl;
+    //cout << "JsonValue(obj): " << endl;
     _type = ObjectType;
 }
 JsonValue::~JsonValue() {
@@ -42,23 +51,20 @@ string JsonValue::asString() { return string(_value._string); }
 JsonArray* JsonValue::asJsonArray() { return _value._array; }
 JsonObject* JsonValue::asJsonObject() { return _value._object; }
 JsonValue::ValueType JsonValue::getType() { return _type; }
-void JsonValue::print(ostream &os, int level) {
-    JsonValue::_imp->print(os, this, level);
-}
 
 
 JsonValue::_JsonValue::_JsonValue() {}
 JsonValue::_JsonValue::_JsonValue(int i) : _int(i) {
-    cout << "_JsonValue(int): " << i << endl;
+    //cout << "_JsonValue(int): " << i << endl;
 }
 JsonValue::_JsonValue::_JsonValue(double d) : _double(d) {
-    cout << "_JsonValue(double): " << d << endl;
+    //cout << "_JsonValue(double): " << d << endl;
 }
 JsonValue::_JsonValue::_JsonValue(bool b) : _bool(b) {
-    cout << "_JsonValue(bool): " << b << endl;
+    //cout << "_JsonValue(bool): " << b << endl;
 }
 JsonValue::_JsonValue::_JsonValue(string &str) {
-    cout << "_JsonValue(char*): " << str << endl;
+    //cout << "_JsonValue(char*): " << str << endl;
     _string = new char[str.size() + 1];
     strcpy(_string, str.c_str());            
 }
@@ -66,7 +72,7 @@ JsonValue::_JsonValue::_JsonValue(string &str) {
 //    cout << "_JsonValue(arr): " << endl;
 //}
 JsonValue::_JsonValue::_JsonValue(JsonArray *arr) {
-    cout << "_JsonValue(arr): " << endl;
+    //cout << "_JsonValue(arr): " << endl;
     _array = new JsonArray(*arr);
 }
 
@@ -74,7 +80,7 @@ JsonValue::_JsonValue::_JsonValue(JsonArray *arr) {
 //    cout << "_JsonValue(obj): " << endl;
 //}
 JsonValue::_JsonValue::_JsonValue(JsonObject *obj) {
-    cout << "_JsonValue(obj): " << endl;
+    //cout << "_JsonValue(obj): " << endl;
     _object = new JsonObject(*obj);
 }
 
@@ -108,7 +114,8 @@ map<string, JsonValue*> JsonObject::getObjectMapping(){
 
 void JsonObject::addLeaf(JsonValue* v) {
     Pair *p = (Pair *) v;
-    _jsonobj.insert(make_pair(p->getKey(), p->getValue()));
+    string key = p->getKey().substr(1,p->getKey().size()-2);
+    _jsonobj.insert(make_pair(key, p->getValue()));
 }
 
 int JsonObject::getInt(const string &key) {
@@ -116,7 +123,7 @@ int JsonObject::getInt(const string &key) {
     if (it != _jsonobj.end()) {
         return it->second->asInt();
     } else {  // TODO: throw exception? JsonException?
-        cout << "no key: " << key << endl;
+	cout << "no key: " << key << endl;
         return INT_MIN;
     }
 }
@@ -129,13 +136,13 @@ string JsonObject::getString(const string &key) {
         return string("");
     }
 }
-JsonObject* JsonObject::getJsonObject(const string &key) {
+JsonValue* JsonObject::getObjectByKey(const string &key) {
     JSON_OBJECT::const_iterator it = _jsonobj.find(key);
     if (it != _jsonobj.end()) {
-        return it->second->asJsonObject();
+        return it->second;
     } else {  // TODO: throw exception?
         cout << "no key: " << key << endl;
-        return new JsonObject();
+        return new JsonValue;
     }
 }
 
@@ -153,6 +160,16 @@ JsonArray::JsonArray(const JsonArray &rhs) {
 
 vector<JsonValue*> JsonArray::getObjectList(){
     return _jsonarr;
+}
+
+JsonValue* JsonArray::getObjectByIndex(const int &index) {
+    //TODO
+    if(index>=_jsonarr.size()){
+	cout << "Json array index out of range!" << endl;
+	return new JsonValue;
+    }
+    else
+	return _jsonarr[index];
 }
 
 void JsonArray::addLeaf(JsonValue* v) {
