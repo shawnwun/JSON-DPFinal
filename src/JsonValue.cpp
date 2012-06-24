@@ -154,9 +154,9 @@ void JsonObject::print(ostream &os) {
 
     os << "{" << endl;
     for (it = _jsonobj.begin(), i = 0; i < size-1; ++it, ++i) {
-        os << it->first << ": " << it->second << ", " << endl;// << it->second;
+        os <<"\t"<< it->first << ": " << it->second << ", " << endl;// << it->second;
     }
-    os << it->first << ": " << it->second << endl;
+    os << "\t"<<it->first << ": " << it->second << endl;
     os << "}" << endl;
 }
 
@@ -174,9 +174,9 @@ void JsonArray::addLeaf(JsonValue* v) {
 
 void JsonArray::print(ostream &os) {
     vector<JsonValue*>::const_iterator it;
-    os << "[";
+    os << "["<<endl;
     for (it = _jsonarr.begin(); it != _jsonarr.end()-1; ++it) {
-        os << *it << ", ";
+        os << "\t"<<*it << ", "<<endl;
     }
     os << *it;
     os << "]" << endl;

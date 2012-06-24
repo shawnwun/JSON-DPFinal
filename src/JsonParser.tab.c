@@ -1697,18 +1697,16 @@ yyreturn:
 
 
 #include "lex.yy.c"
+#include <stdio.h>
 extern FILE *yyin;
 
 FILE* mytmpfile() {
     FILE* fp;
-    char* name = _tempnam( NULL, NULL );
-
-    if( !name ) return 0;
-     
-    fopen_s(&fp, name, "wb+");
-
+    char* name = tempnam( NULL,NULL );
+    if( !name )
+	return 0;
+    fp = fopen( name, "wb+");
     if(name) free(name);
-
     return fp;
 }
 
