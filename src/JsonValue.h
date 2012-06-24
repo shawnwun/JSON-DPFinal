@@ -28,7 +28,7 @@ public:
     JsonArray* asJsonArray();
     JsonObject* asJsonObject();
     //ValueType getType();
-    virtual void print(ostream &);
+    virtual void print(ostream &, int level);
 
     friend ostream& operator<< (ostream& os, JsonValue* v);
 
@@ -67,7 +67,7 @@ public:
 
     string& getKey();
     JsonValue* getValue();
-    virtual void print(ostream &);
+    virtual void print(ostream &, int level);
 
 private:
     string _key;
@@ -90,7 +90,7 @@ public:
     JsonObject* getJsonObject(const string &key);
 
 
-    virtual void print(ostream &);
+    virtual void print(ostream &, int level);
 
 private:
     JSON_OBJECT _jsonobj;
@@ -104,7 +104,7 @@ public:
     // JsonArray(const JsonArray& rhs) {};
 
     virtual void addLeaf(JsonValue* v);
-    virtual void print(ostream &);
+    virtual void print(ostream &, int level);
 
 private:
     vector<JsonValue*> _jsonarr;
