@@ -17,29 +17,6 @@ class DefaultPrintImp;
 class JsonValue {
 public:
     
-    enum ValueType {            
-        IntType, DoubleType, BoolType,
-        StringType, NullType,
-        ObjectType, ArrayType
-    };
-
-    JsonValue();
-    JsonValue(int i);
-    JsonValue(double d);
-    JsonValue(bool b);
-    JsonValue(string &s);
-    JsonValue(JsonArray *arr);
-    JsonValue(JsonObject *obj);
-    ~JsonValue();
-
-    int asInt();
-    double asDouble();
-    bool asBool();
-    string asString();
-    JsonArray* asJsonArray();
-    JsonObject* asJsonObject();
-    ValueType getType();
-    
     virtual void addLeaf(JsonValue* v);
     virtual void print(ostream &, int level);
     virtual JsonValue* getObjectByKey(const string& key);
@@ -55,28 +32,46 @@ public:
 protected:
     // Print Imp.
     static PrintImp* _imp;
+};
+
+class JsonNull : public JsonValue{
+public:
+    JsonNull(){}
+    virtual void print(ostream &, int level);
+};
+
+
+class JsonString : public JsonValue{
+public:
+    JsonString(string s):_str(s){} 
+    string getString(){ return _str;}
+
+    virtual void print(ostream &, int level);
 
 private:
-    typedef union _JsonValue {
-        _JsonValue();
-        _JsonValue(int i);
-        _JsonValue(double d);
-        _JsonValue(bool b);
-        _JsonValue(string &str);
-        _JsonValue(JsonArray *arr);
-        _JsonValue(JsonObject *obj);
+    string _str;
+};
 
-        int _int;
-        double _double;
-        bool _bool;
-        char *_string;
-        JsonArray *_array;
-        JsonObject *_object;
+class JsonBoolean : public JsonValue{
+public:
+    JsonBoolean(double b):_bool(b){} 
+    bool getBoolean(){ return _bool;}
 
-    } Value;    
+    virtual void print(ostream &, int level);
 
-    Value _value;
-    ValueType _type;
+private:
+    bool _bool;
+};
+
+class JsonDouble : public JsonValue{
+public:
+    JsonDouble(double d):_double(d){} 
+    double getDouble(){ return _double;}
+
+    virtual void print(ostream &, int level);
+
+private:
+    double _double;
 };
 
 class Pair : public JsonValue {
@@ -98,16 +93,14 @@ public:
 
     JsonObject();
     JsonObject(const JsonObject &rhs);
-    //JsonObject(map<string, JsonValue*>& ) {};
-    //JsonObject(const JsonObject& rhs) {};
 
     virtual void addLeaf(JsonValue* v);
     virtual JsonValue* getObjectByKey(const string &key);
     virtual void print(ostream &, int level);
     
     int getSize();
-    int getInt(const string &key);
-    string getString(const string &key);
+    //int getInt(const string &key);
+    //string getString(const string &key);
     JSON_OBJECT getObjectMapping(); 
 
 

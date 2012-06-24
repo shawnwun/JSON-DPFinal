@@ -12,23 +12,23 @@ class ConcreteBuilder : public JsonBuilder {
         // Encounter JSON Value (Leaf Node)
         virtual JsonValue* meetString(std::string str){
             //cout << "Meet String " << str << endl;
-            return new JsonValue(str);
+            return new JsonString(str);
         }
         virtual JsonValue* meetNumber(double num) {
             //cout << "Meet Number " << num << endl;
-            return new JsonValue(num);
+            return new JsonDouble(num);
         }
         virtual JsonValue* meetBool(bool val) {
             //cout << "Meet BOOL " << val << endl;
-            return new JsonValue(val);
+            return new JsonBoolean(val);
         }
         virtual JsonValue* meetNULL() {
             //cout << "Meet NULL " << endl;
-            return new JsonValue();
+            return new JsonNull();
         }
         virtual JsonValue* meetPair(JsonValue* key, JsonValue* value) {
             //cout << "Meet NewPair " << endl;
-            string str = key->asString();
+            string str = ((JsonString*)key)->getString();
             return new Pair(str, value);
         }
 

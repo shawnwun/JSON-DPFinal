@@ -1,7 +1,8 @@
 #include "PrintImp.h"
 
 void DefaultPrintImp::print(ostream& os, JsonValue* jv, int level) const{
-    switch (jv->getType()) {
+    jv->print(os,level);
+    /*switch (jv->getType()) {
     case JsonValue::IntType:
 	os << jv->asInt();
         break;
@@ -20,7 +21,7 @@ void DefaultPrintImp::print(ostream& os, JsonValue* jv, int level) const{
     default:
         // shouldn't reach here
         break;
-    }
+    }*/
 }
 void DefaultPrintImp::print(ostream& os, Pair* jv, int level) const{
     os << jv->getKey() << ":";
@@ -57,7 +58,8 @@ void DefaultPrintImp::print(ostream& os, JsonArray* jv, int level) const{
 }
 
 void PrettyPrintImp::print(ostream& os, JsonValue* jv, int level) const{
-    switch (jv->getType()) {
+    jv->print(os,level);
+    /*switch (jv->getType()) {
     case JsonValue::IntType:
 	os << jv->asInt();
         break;
@@ -76,7 +78,7 @@ void PrettyPrintImp::print(ostream& os, JsonValue* jv, int level) const{
     default:
         // shouldn't reach here
         break;
-    }
+    }*/
 }
 void PrettyPrintImp::print(ostream& os, Pair* jv, int level) const{
     int width = level * _sep;

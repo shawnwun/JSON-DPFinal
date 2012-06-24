@@ -24,66 +24,23 @@ void JsonValue::print(ostream &os, int level) {
 JsonValue* JsonValue::getObjectByKey(const string& key){ return NULL;}
 JsonValue* JsonValue::getObjectByIndex(const int& index){ return NULL;}
 
-
-JsonValue::JsonValue() { _type = NullType; };
-JsonValue::JsonValue(int i) : _value(i) { _type = IntType; }
-JsonValue::JsonValue(double d) : _value(d) { _type = DoubleType; }
-JsonValue::JsonValue(bool b) : _value(b) { _type = BoolType; }
-JsonValue::JsonValue(string &s) : _value(s) { _type = StringType; }
-JsonValue::JsonValue(JsonArray *arr) : _value(arr) {
-    //cout << "JsonValue(arr): " << endl;
-    _type = ArrayType;
-}
-JsonValue::JsonValue(JsonObject *obj) : _value(obj) {
-    //cout << "JsonValue(obj): " << endl;
-    _type = ObjectType;
-}
-JsonValue::~JsonValue() {
-    if (_type == StringType) {
-        delete [] _value._string;
-    }
+/** JsonNull **/
+void JsonNull::print(ostream &os, int level){
+    os << "null";
 }
 
-int JsonValue::asInt() { return _value._int; }
-double JsonValue::asDouble() { return _value._double; }
-bool JsonValue::asBool() { return _value._bool; }
-string JsonValue::asString() { return string(_value._string); }
-JsonArray* JsonValue::asJsonArray() { return _value._array; }
-JsonObject* JsonValue::asJsonObject() { return _value._object; }
-JsonValue::ValueType JsonValue::getType() { return _type; }
-
-
-JsonValue::_JsonValue::_JsonValue() {}
-JsonValue::_JsonValue::_JsonValue(int i) : _int(i) {
-    //cout << "_JsonValue(int): " << i << endl;
+/** JsonBoolean **/
+void JsonBoolean::print(ostream &os, int level){
+    os << (_bool ? "true" : "false");
 }
-JsonValue::_JsonValue::_JsonValue(double d) : _double(d) {
-    //cout << "_JsonValue(double): " << d << endl;
+/** JsonString **/
+void JsonString::print(ostream &os, int level){
+    os << _str;
 }
-JsonValue::_JsonValue::_JsonValue(bool b) : _bool(b) {
-    //cout << "_JsonValue(bool): " << b << endl;
+/** JsonDouble **/
+void JsonDouble::print(ostream &os, int level){
+    os << _double;
 }
-JsonValue::_JsonValue::_JsonValue(string &str) {
-    //cout << "_JsonValue(char*): " << str << endl;
-    _string = new char[str.size() + 1];
-    strcpy(_string, str.c_str());            
-}
-//JsonValue::_JsonValue::_JsonValue(JsonArray *arr) : _array(arr) {
-//    cout << "_JsonValue(arr): " << endl;
-//}
-JsonValue::_JsonValue::_JsonValue(JsonArray *arr) {
-    //cout << "_JsonValue(arr): " << endl;
-    _array = new JsonArray(*arr);
-}
-
-//JsonValue::_JsonValue::_JsonValue(JsonObject *obj) : _object(obj) {
-//    cout << "_JsonValue(obj): " << endl;
-//}
-JsonValue::_JsonValue::_JsonValue(JsonObject *obj) {
-    //cout << "_JsonValue(obj): " << endl;
-    _object = new JsonObject(*obj);
-}
-
 /** Pair */
 Pair::Pair(string &key, JsonValue *value)
     : _key(key), _value(value) {
@@ -101,8 +58,6 @@ JsonObject::JsonObject() {}
 JsonObject::JsonObject(const JsonObject &rhs) {
     _jsonobj = rhs._jsonobj;
 }
-//JsonObject(map<string, JsonValue*>& ) {};
-//JsonObject(const JsonObject& rhs) {};
 
 int JsonObject::getSize(){
     return _jsonobj.size();
@@ -118,24 +73,6 @@ void JsonObject::addLeaf(JsonValue* v) {
     _jsonobj.insert(make_pair(key, p->getValue()));
 }
 
-int JsonObject::getInt(const string &key) {
-    JSON_OBJECT::const_iterator it = _jsonobj.find(key);
-    if (it != _jsonobj.end()) {
-        return it->second->asInt();
-    } else {  // TODO: throw exception? JsonException?
-	cout << "no key: " << key << endl;
-        return INT_MIN;
-    }
-}
-string JsonObject::getString(const string &key) {
-    JSON_OBJECT::const_iterator it = _jsonobj.find(key);
-    if (it != _jsonobj.end()) {
-        return it->second->asString();
-    } else {  // TODO: throw exception?
-        cout << "no key: " << key << endl;
-        return string("");
-    }
-}
 JsonValue* JsonObject::getObjectByKey(const string &key) {
     JSON_OBJECT::const_iterator it = _jsonobj.find(key);
     if (it != _jsonobj.end()) {
@@ -156,7 +93,6 @@ JsonArray::JsonArray() {}
 JsonArray::JsonArray(const JsonArray &rhs) {
     _jsonarr = rhs._jsonarr;
 }
-// JsonArray(const JsonArray& rhs) {};
 
 vector<JsonValue*> JsonArray::getObjectList(){
     return _jsonarr;
