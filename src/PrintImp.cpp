@@ -2,26 +2,6 @@
 
 void DefaultPrintImp::print(ostream& os, JsonValue* jv, int level) const{
     jv->print(os,level);
-    /*switch (jv->getType()) {
-    case JsonValue::IntType:
-	os << jv->asInt();
-        break;
-    case JsonValue::DoubleType:
-        os << jv->asDouble();
-        break;
-    case JsonValue::StringType:
-        os << jv->asString();
-        break;
-    case JsonValue::BoolType:
-        os << (jv->asBool() ? "true" : "false");
-        break;
-    case JsonValue::NullType:
-        os << "null";
-        break;
-    default:
-        // shouldn't reach here
-        break;
-    }*/
 }
 void DefaultPrintImp::print(ostream& os, Pair* jv, int level) const{
     os << jv->getKey() << ":";
@@ -59,26 +39,6 @@ void DefaultPrintImp::print(ostream& os, JsonArray* jv, int level) const{
 
 void PrettyPrintImp::print(ostream& os, JsonValue* jv, int level) const{
     jv->print(os,level);
-    /*switch (jv->getType()) {
-    case JsonValue::IntType:
-	os << jv->asInt();
-        break;
-    case JsonValue::DoubleType:
-        os << jv->asDouble();
-        break;
-    case JsonValue::StringType:
-        os << jv->asString();
-        break;
-    case JsonValue::BoolType:
-        os << (jv->asBool() ? "true" : "false");
-        break;
-    case JsonValue::NullType:
-        os << "null";
-        break;
-    default:
-        // shouldn't reach here
-        break;
-    }*/
 }
 void PrettyPrintImp::print(ostream& os, Pair* jv, int level) const{
     int width = level * _sep;

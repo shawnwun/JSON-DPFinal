@@ -1721,6 +1721,7 @@ JsonValue* callParser(JsonBuilder* jsonBuilder, string jsonString){
     
     try{
 	if(yyparse!=0){
+	    IncorrectJsonException incorrexcep;
 	    throw incorrexcep;
 	}
     } catch(IncorrectJsonException& exception){

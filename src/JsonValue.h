@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
-//#include "JsonException.h"
+#include "JsonException.h"
 using namespace std;
 
 class JsonArray;
@@ -36,7 +36,6 @@ protected:
 
 class JsonNull : public JsonValue{
 public:
-    JsonNull(){}
     virtual void print(ostream &, int level);
 };
 

@@ -21,8 +21,26 @@ void JsonValue::addLeaf(JsonValue* v) {}
 void JsonValue::print(ostream &os, int level) {
     JsonValue::_imp->print(os, this, level);
 }
-JsonValue* JsonValue::getObjectByKey(const string& key){ return NULL;}
-JsonValue* JsonValue::getObjectByIndex(const int& index){ return NULL;}
+JsonValue* JsonValue::getObjectByKey(const string& key){
+    try{
+	NotJsonObjectException notobjexcep;
+	throw notobjexcep;
+	return new JsonNull();
+    } catch(NotJsonObjectException& exception){
+	cout << exception.what() << endl;
+    }
+    return new JsonNull();
+}
+JsonValue* JsonValue::getObjectByIndex(const int& index){
+    try{
+	NotJsonArrayException notarrexcep;
+	throw notarrexcep;
+	return new JsonNull();
+    } catch(NotJsonArrayException& exception){
+	cout << exception.what() << endl;
+    }
+    return new JsonNull();
+}
 
 /** JsonNull **/
 void JsonNull::print(ostream &os, int level){
@@ -75,12 +93,19 @@ void JsonObject::addLeaf(JsonValue* v) {
 
 JsonValue* JsonObject::getObjectByKey(const string &key) {
     JSON_OBJECT::const_iterator it = _jsonobj.find(key);
-    if (it != _jsonobj.end()) {
-        return it->second;
-    } else {  // TODO: throw exception?
-        cout << "no key: " << key << endl;
-        return new JsonValue;
+    try{
+	if (it != _jsonobj.end()) {
+	    return it->second;
+	} 
+	else{
+	    DataNotFoundException datanfoundexcep;
+	    throw datanfoundexcep;
+	    return new JsonNull();
+	}
+    } catch(DataNotFoundException& exception){
+	cout << exception.what() << endl;
     }
+    return new JsonNull();
 }
 
 void JsonObject::print(ostream &os, int level) {
@@ -99,13 +124,17 @@ vector<JsonValue*> JsonArray::getObjectList(){
 }
 
 JsonValue* JsonArray::getObjectByIndex(const int &index) {
-    //TODO
-    if(index>=_jsonarr.size()){
-	cout << "Json array index out of range!" << endl;
-	return new JsonValue;
+    try{
+	if(index>=_jsonarr.size()){
+	    DataNotFoundException datanfoundexcep;
+	    throw datanfoundexcep;
+	    return new JsonNull();
+	}
+	else return _jsonarr[index];
+    } catch(DataNotFoundException& exception){
+	cout << exception.what() << endl;
     }
-    else
-	return _jsonarr[index];
+    return new JsonNull();
 }
 
 void JsonArray::addLeaf(JsonValue* v) {
