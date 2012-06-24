@@ -16,7 +16,7 @@
           null,
           -1,
           "two", {
-            "obj inside array" : "­È"
+            "obj inside array" : "¿"
           }
         ],
         "Bool True" : true,

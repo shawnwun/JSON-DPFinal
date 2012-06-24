@@ -9,8 +9,19 @@ using namespace std;
 class JsonArray;
 class JsonObject;
 
+class PrintImp;
+class PrettyPrintImp;
+class DefaultPrintImp;
+
 class JsonValue {
 public:
+    
+    enum ValueType {            
+        IntType, DoubleType, BoolType,
+        StringType, NullType,
+        ObjectType, ArrayType
+    };
+
     virtual void addLeaf(JsonValue* v);
     JsonValue();
     JsonValue(int i);
@@ -27,16 +38,19 @@ public:
     string asString();
     JsonArray* asJsonArray();
     JsonObject* asJsonObject();
-    //ValueType getType();
-    virtual void print(ostream &);
+    ValueType getType();
+    virtual void print(ostream &, int level);
 
     friend ostream& operator<< (ostream& os, JsonValue* v);
 
-    enum ValueType {            
-        IntType, DoubleType, BoolType,
-        StringType, NullType,
-        ObjectType, ArrayType
-    };
+    // Config function
+    static void ConfigImp(PrintImp* imp){
+	_imp = imp;
+    }
+
+protected:
+    // Print Imp.
+    static PrintImp* _imp;
 
 private:
     typedef union _JsonValue {
@@ -67,7 +81,7 @@ public:
 
     string& getKey();
     JsonValue* getValue();
-    virtual void print(ostream &);
+    virtual void print(ostream &, int level);
 
 private:
     string _key;
@@ -85,12 +99,13 @@ public:
 
     virtual void addLeaf(JsonValue* v);
 
+    int getSize();
     int getInt(const string &key);
     string getString(const string &key);
     JsonObject* getJsonObject(const string &key);
+    JSON_OBJECT getObjectMapping(); 
 
-
-    virtual void print(ostream &);
+    virtual void print(ostream &, int level);
 
 private:
     JSON_OBJECT _jsonobj;
@@ -103,8 +118,10 @@ public:
     JsonArray(const JsonArray &rhs);
     // JsonArray(const JsonArray& rhs) {};
 
+    vector<JsonValue*> getObjectList();
+
     virtual void addLeaf(JsonValue* v);
-    virtual void print(ostream &);
+    virtual void print(ostream &, int level);
 
 private:
     vector<JsonValue*> _jsonarr;

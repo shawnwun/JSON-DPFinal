@@ -699,7 +699,7 @@ YY_RULE_SETUP
 case 11:
 YY_RULE_SETUP
 #line 42 "JsonLexer.l"
-{yylval.num=atoi(yytext);return JSON_NUMBER;}
+{yylval.num=atof(yytext);return JSON_NUMBER;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
