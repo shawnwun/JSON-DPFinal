@@ -17,9 +17,9 @@ int main(void) {
 
     // Config print function
     //JsonValue::ConfigImp(new DefaultPrintImp());
-    JsonValue::ConfigImp(new PrettyPrintImp(2));
+    JsonValue::ConfigImp(new PrettyPrintImp(8));
 
-    JsonObject* data = (JsonObject*) callParser(new ConcreteBuilder(), jsonStr);
+    JsonValue* data = callParser(new ConcreteBuilder(), jsonStr);
     if (data) {
         cout << "Correct JSON" << endl;
         cout << "==============================" << endl;

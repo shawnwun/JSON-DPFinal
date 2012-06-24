@@ -12,7 +12,6 @@ PrintImp* JsonValue::_imp;
 
 ostream& operator<< (ostream& os, JsonValue* v) { 
     v->print(os,1);
-    //JsonValue::_imp->print(os, (JsonObject*)v, 1);
     return os;
 }
 
@@ -44,27 +43,7 @@ JsonArray* JsonValue::asJsonArray() { return _value._array; }
 JsonObject* JsonValue::asJsonObject() { return _value._object; }
 JsonValue::ValueType JsonValue::getType() { return _type; }
 void JsonValue::print(ostream &os, int level) {
-    JsonValue::_imp->print(os, (JsonValue*)this, level);
-    /*switch (_type) {
-    case JsonValue::IntType:
-        os << _value._int;
-        break;
-    case JsonValue::DoubleType:
-        os << _value._double;
-        break;
-    case JsonValue::StringType:
-        os << _value._string;
-        break;
-    case JsonValue::BoolType:
-        os << (_value._bool ? "true" : "false");
-        break;
-    case JsonValue::NullType:
-        os << "null";
-        break;
-    default:
-        // shouldn't reach here
-        break;
-    }*/
+    JsonValue::_imp->print(os, this, level);
 }
 
 
@@ -107,11 +86,7 @@ Pair::Pair(string &key, JsonValue *value)
 string& Pair::getKey() { return _key; }
 JsonValue* Pair::getValue() { return _value; }
 void Pair::print(ostream &os, int level) {
-    JsonValue::_imp->print(os, (Pair*)this, level);
-    /*int width = level * 4;
-    os << setw(width) << "" << _key << ": ";
-    _value->print(os, level+1);
-    */
+    JsonValue::_imp->print(os, this, level);
 }
 
 
@@ -165,33 +140,7 @@ JsonObject* JsonObject::getJsonObject(const string &key) {
 }
 
 void JsonObject::print(ostream &os, int level) {
-    
-    JsonValue::_imp->print(os, (JsonObject*)this, level);
-    /*size_t size = _jsonobj.size();
-    int i;
-    JSON_OBJECT::const_iterator it;
-    
-    os << "{" << endl;
-    for (it = _jsonobj.begin(), i = 0; i < size-1; ++it, ++i) {
-        os << setw(4) << "" 
-           << it->first << ": " << it->second << ", " << endl;// << it->second;
-    }
-    os << setw(4) << "" << it->first << ": " << it->second << endl;
-    os << "}";
-    
-    int width = level * 4;
-    os << "{" << endl;
-    for (it = _jsonobj.begin(), i = 0; i < size-1; ++it, ++i) {
-        os << setw(width) << "" << it->first << ": ";
-        it->second->print(os, level+1);
-        os << ", " << endl;// << it->second;
-    }
-    os << setw(width) << "" << it->first << ": ";
-    it->second->print(os, level+1);
-
-    width = (level-1) * 4;
-    os << endl << setw(width) << "" << "}";
-    */
+    JsonValue::_imp->print(os, this, level);
 }
 
 
@@ -211,22 +160,6 @@ void JsonArray::addLeaf(JsonValue* v) {
 }
 
 void JsonArray::print(ostream &os, int level) {
-    
-    JsonValue::_imp->print(os, (JsonArray*)this, level);
-    
-    /*vector<JsonValue*>::const_iterator it;
-    int width = level * 4;
-    os << "[" << endl;
-    for (it = _jsonarr.begin(); it != _jsonarr.end()-1; ++it) {
-        os << setw(width) << "";
-        (*it)->print(os, level+1);
-        os << ", " << endl;
-    }
-    os << setw(width) << "";
-    (*it)->print(os, level+1);
-
-    width = (level-1) * 4;
-    os << endl << setw(width) << "" << "]";
-    */
+    JsonValue::_imp->print(os, this, level);
 }
 
