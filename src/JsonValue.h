@@ -53,7 +53,7 @@ private:
 
 class JsonBoolean : public JsonValue{
 public:
-    JsonBoolean(double b):_bool(b){} 
+    JsonBoolean(bool b):_bool(b){} 
     bool getBoolean(){ return _bool;}
 
     virtual void print(ostream &, int level);
