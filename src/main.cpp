@@ -31,7 +31,6 @@ int main(int argc, char** argv) {
 	JsonValue::ConfigImp(new PrettyPrintImp(line_sep));
 
     JsonValue* data = callParser(new ConcreteBuilder(), jsonStr);
-    
     if(data){
 	cout << "Correct JSON" << endl;
         cout << "==============================" << endl;

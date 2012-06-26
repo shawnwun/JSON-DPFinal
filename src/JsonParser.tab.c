@@ -1718,15 +1718,17 @@ JsonValue* callParser(JsonBuilder* jsonBuilder, string jsonString){
 
     fprintf(yyin, "%s", jsonString.c_str());
     fseek ( yyin , 0 , SEEK_SET );
-    
+    int yy = yyparse();    
     try{
-	if(yyparse!=0){
+	if(yy!=0){
 	    IncorrectJsonException incorrexcep;
 	    throw incorrexcep;
 	}
+	return finalObject;
     } catch(IncorrectJsonException& exception){
 	cout << exception.what() << endl;
+	return NULL;    
     }
 
-    return (yyparse()==0) ? finalObject : NULL ;
+    //return (yyparse()==0) ? finalObject : NULL ;
 }
